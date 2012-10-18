@@ -37,15 +37,16 @@ user experience for cropping before uploading the image.
 ```
 
 ```javascript
-new Cutter(
-  el: @$(".js-my_image"),
+new Cutter({
+  el: this.$(".js-my_image"),
   aspectRatio: 4/6,
-  geometryFields:
-    x: @$(".js-my_image input[name$='_crop_x]']"),
-    y: @$(".js-my_image input[name$='_crop_y]']"),
-    w: @$(".js-my_image input[name$='_crop_w]']"),
-    h: @$(".js-my_image input[name$='_crop_h]']")
-)
+  geometryFields: {
+    x: this.$(".js-my_image input[name$='_crop_x]']"),
+    y: this.$(".js-my_image input[name$='_crop_y]']"),
+    w: this.$(".js-my_image input[name$='_crop_w]']"),
+    h: this.$(".js-my_image input[name$='_crop_h]']")
+  }
+})
 ```
 
 ## Options & Callbacks
