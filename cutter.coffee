@@ -28,14 +28,14 @@ class window.Cutter extends Backbone.View
         @trigger("noBrowserSupport")
         @options.onNoBrowserSupport() if @options.onNoBrowserSupport
       onInvalidFiletype: (filetype) =>
-        @trigger("onInvalidFiletype", filetype)
+        @trigger("invalidFiletype", filetype)
       onFileReaderError: (error) =>
-        @trigger("onFileReaderError", error)
+        @trigger("fileReaderError", error)
       onDestinationUpdate: @_onShowoffUpdate
     )
 
   _onShowoffUpdate: =>
-    @trigger("onDestinationUpdate")
+    @trigger("destinationUpdate")
 
     # Destroy jCrop if we have one
     if @jCrop?
