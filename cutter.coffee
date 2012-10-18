@@ -25,7 +25,6 @@ class window.Cutter extends Backbone.View
     @$("input[type=file]").showoff(
       destination: @$img
       onNoBrowserSupport: =>
-        @trigger("noBrowserSupport")
         @options.onNoBrowserSupport() if @options.onNoBrowserSupport
       onInvalidFiletype: (filetype) =>
         @trigger("invalidFiletype", filetype)

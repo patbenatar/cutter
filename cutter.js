@@ -43,7 +43,6 @@
       return this.$("input[type=file]").showoff({
         destination: this.$img,
         onNoBrowserSupport: function() {
-          _this.trigger("noBrowserSupport");
           if (_this.options.onNoBrowserSupport) {
             return _this.options.onNoBrowserSupport();
           }
