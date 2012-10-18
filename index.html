@@ -89,11 +89,11 @@
       cutter.on("noBrowserSupport", function () {
         console.log("noBrowserSupport")
       });
-      cutter.on("invalidFiletype", function () {
-        console.log("invalidFiletype")
+      cutter.on("invalidFiletype", function (filetype) {
+        console.log("invalidFiletype", filetype)
       });
-      cutter.on("fileReaderError", function () {
-        console.log("fileReaderError")
+      cutter.on("fileReaderError", function (error) {
+        console.log("fileReaderError", error)
       });
       cutter.on("destinationUpdate", function () {
         console.log("destinationUpdate")
