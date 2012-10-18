@@ -98,3 +98,11 @@ Called during initialization if browser is incompatible with jquery.showoff
 * __Required:__ No
 * __Type:__ Function()
 * __Default:__ `null`
+
+## Events
+
+The following events are proxied through from showoff.
+
+* `invalidFiletype`
+* `fileReaderError`
+* `destinationUpdate`
