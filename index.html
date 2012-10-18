@@ -76,7 +76,7 @@
   </style>
   <script type="text/javascript">
     $(function () {
-      new Cutter({
+      var cutter = new Cutter({
         el: $(".js-my_image"),
         aspectRatio: 4/6,
         geometryFields: {
@@ -85,7 +85,19 @@
           w: $(".js-my_image input[name$='_crop_w']"),
           h: $(".js-my_image input[name$='_crop_h']")
         }
-      })
+      });
+      cutter.on("noBrowserSupport", function () {
+        console.log("noBrowserSupport")
+      });
+      cutter.on("invalidFiletype", function () {
+        console.log("invalidFiletype")
+      });
+      cutter.on("fileReaderError", function () {
+        console.log("fileReaderError")
+      });
+      cutter.on("destinationUpdate", function () {
+        console.log("destinationUpdate")
+      });
     });
   </script>
 </head>
