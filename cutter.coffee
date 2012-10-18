@@ -1,4 +1,5 @@
 class window.Cutter extends Backbone.View
+  _.extend @, Backbone.Events
 
   settings:
     onNoBrowserSupport: null
@@ -21,20 +22,21 @@ class window.Cutter extends Backbone.View
     @$container = @$(".js-image_container")
     @$img = @$(".js-image")
 
-    # --NOTE: Bug in Jcrop--
-    # If we don't use an aspectRatio here, Jcrop stretches the image incorrectly
-    # in the case that the rendered dimensions of the image are different than
-    # the real dimensions (ie CSS affecting dimensions--el.width vs $(el).width)
-    # Offending code is in Jcrop lines 300-312.
-
     @$("input[type=file]").showoff(
       destination: @$img
       onNoBrowserSupport: =>
+        @trigger("noBrowserSupport")
         @options.onNoBrowserSupport() if @options.onNoBrowserSupport
+      onInvalidFiletype: (filetype) =>
+        @trigger("onInvalidFiletype", filetype)
+      onFileReaderError: (error) =>
+        @trigger("onFileReaderError", error)
       onDestinationUpdate: @_onShowoffUpdate
     )
 
   _onShowoffUpdate: =>
+    @trigger("onDestinationUpdate")
+
     # Destroy jCrop if we have one
     if @jCrop?
       @jCrop.destroy()

@@ -15,6 +15,8 @@
       return Cutter.__super__.constructor.apply(this, arguments);
     }
 
+    _.extend(Cutter, Backbone.Events);
+
     Cutter.prototype.settings = {
       onNoBrowserSupport: null,
       aspectRatio: null,
@@ -41,9 +43,16 @@
       return this.$("input[type=file]").showoff({
         destination: this.$img,
         onNoBrowserSupport: function() {
+          _this.trigger("noBrowserSupport");
           if (_this.options.onNoBrowserSupport) {
             return _this.options.onNoBrowserSupport();
           }
+        },
+        onInvalidFiletype: function(filetype) {
+          return _this.trigger("onInvalidFiletype", filetype);
+        },
+        onFileReaderError: function(error) {
+          return _this.trigger("onFileReaderError", error);
         },
         onDestinationUpdate: this._onShowoffUpdate
       });
@@ -51,6 +60,7 @@
 
     Cutter.prototype._onShowoffUpdate = function() {
       var jcropOptions, that;
+      this.trigger("onDestinationUpdate");
       if (this.jCrop != null) {
         this.jCrop.destroy();
         this.$img.removeAttr("style");
