@@ -3,7 +3,7 @@
 Cutter is a `Backbone.View` for image upload fields that combines the power of
 [patbenatar/showoff](https://github.com/patbenatar/showoff) and
 [tapmodo/Jcrop](https://github.com/tapmodo/Jcrop) to create a quick and easy
-image cropping user experience.
+user experience for cropping before uploading the image.
 
 ## Dependencies
 
