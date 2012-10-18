@@ -49,10 +49,10 @@
           }
         },
         onInvalidFiletype: function(filetype) {
-          return _this.trigger("onInvalidFiletype", filetype);
+          return _this.trigger("invalidFiletype", filetype);
         },
         onFileReaderError: function(error) {
-          return _this.trigger("onFileReaderError", error);
+          return _this.trigger("fileReaderError", error);
         },
         onDestinationUpdate: this._onShowoffUpdate
       });
@@ -60,7 +60,7 @@
 
     Cutter.prototype._onShowoffUpdate = function() {
       var jcropOptions, that;
-      this.trigger("onDestinationUpdate");
+      this.trigger("destinationUpdate");
       if (this.jCrop != null) {
         this.jCrop.destroy();
         this.$img.removeAttr("style");
