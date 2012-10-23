@@ -71,6 +71,7 @@
         cropOptions = {
           instance: true,
           handles: true,
+          onInit: _this._onCropChange,
           onSelectChange: _this._onCropChange,
           parent: _this.$container
         };

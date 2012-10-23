@@ -52,6 +52,7 @@ class window.Cutter extends Backbone.View
       cropOptions =
         instance: true
         handles: true
+        onInit: @_onCropChange
         onSelectChange: @_onCropChange
         parent: @$container
 
