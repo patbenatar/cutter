@@ -10,7 +10,7 @@ class window.Cutter extends Backbone.View
       w: null
       h: null
 
-  jCrop: null
+  crop: null
 
   $img: null
   $container: null
@@ -21,6 +21,9 @@ class window.Cutter extends Backbone.View
 
     @$container = @$(".js-image_container")
     @$img = @$(".js-image")
+
+    # Make sure @$container has position relative
+    @$container.css("position", "relative")
 
     @$("input[type=file]").showoff(
       destination: @$img
@@ -34,36 +37,51 @@ class window.Cutter extends Backbone.View
     )
 
   _onShowoffUpdate: =>
-    @trigger("destinationUpdate")
+    # Set a short timeout to avoid the race condition where we sometimes try to
+    # get the image dimensions before the DOM is fully updated with the new img
+    setTimeout(=>
+      @trigger("destinationUpdate")
 
-    # Destroy jCrop if we have one
-    if @jCrop?
-      @jCrop.destroy()
-      @$img.removeAttr("style")
+      @$container.show()
 
-    @$container.show()
+      # If we've already setup the cropper, just update it
+      if @crop
+        @crop.update()
+        return
 
-    jcropOptions =
-      onChange: @_onCropChange
-      onSelect: @_onCropChange
+      cropOptions =
+        instance: true
+        handles: true
+        onSelectChange: @_onCropChange
+        parent: @$container
 
-    if @options.aspectRatio
-      jcropOptions.aspectRatio = @options.aspectRatio
-      jcropOptions.setSelect = [0, 0, @$img.width()]
+      # Determine size of initial crop area based on aspect ratio
+      width = @$img.width()
+      height = Math.round(@$img.width() / @options.aspectRatio)
+      if height > @$img.height()
+        height = @$img.height()
+        width = Math.round(height * @options.aspectRatio)
 
-    that = @
-    @$img.Jcrop(jcropOptions, ->
-      that.jCrop = this
-    )
+      if @options.aspectRatio
+        $.extend(cropOptions, cropOptions,
+          aspectRatio: "#{@options.aspectRatio}:1"
+          x1: 0
+          y1: 0
+          x2: width
+          y2: height
+        )
 
-  _onCropChange: (event) =>
+      @crop = @$img.imgAreaSelect(cropOptions)
+    , 50)
+
+  _onCropChange: (img, event) =>
     width = @$img.width()
     height = @$img.height()
 
     relativeCoords =
-      w: event.w / width
-      h: event.h / height
-      x: event.x / width
-      y: event.y / height
+      w: event.width / width
+      h: event.height / height
+      x: event.x1 / width
+      y: event.y1 / height
 
     $el.val(relativeCoords[coord]) for coord, $el of @options.geometryFields

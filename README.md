@@ -2,15 +2,15 @@
 
 Cutter is a `Backbone.View` for image upload fields that combines the power of
 [patbenatar/showoff](https://github.com/patbenatar/showoff) and
-[tapmodo/Jcrop](https://github.com/tapmodo/Jcrop) to create a quick and easy
-user experience for cropping before uploading the image.
+[odyniec/imgareaselect](https://github.com/odyniec/imgareaselect) to create a
+quick and easy user experience for cropping before uploading the image.
 
 ## Dependencies
 
 * Backbone.js (and therefore Underscore.js)
 * jQuery
 * [jquery.showoff](https://github.com/patbenatar/showoff)
-* [jquery.Jcrop](https://github.com/tapmodo/Jcrop)
+* [jquery.imgareaselect](https://github.com/odyniec/imgareaselect)
 
 ## Browser Support
 

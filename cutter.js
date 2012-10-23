@@ -28,7 +28,7 @@
       }
     };
 
-    Cutter.prototype.jCrop = null;
+    Cutter.prototype.crop = null;
 
     Cutter.prototype.$img = null;
 
@@ -40,6 +40,7 @@
       delete this.options.el;
       this.$container = this.$(".js-image_container");
       this.$img = this.$(".js-image");
+      this.$container.css("position", "relative");
       return this.$("input[type=file]").showoff({
         destination: this.$img,
         onNoBrowserSupport: function() {
@@ -58,36 +59,49 @@
     };
 
     Cutter.prototype._onShowoffUpdate = function() {
-      var jcropOptions, that;
-      this.trigger("destinationUpdate");
-      if (this.jCrop != null) {
-        this.jCrop.destroy();
-        this.$img.removeAttr("style");
-      }
-      this.$container.show();
-      jcropOptions = {
-        onChange: this._onCropChange,
-        onSelect: this._onCropChange
-      };
-      if (this.options.aspectRatio) {
-        jcropOptions.aspectRatio = this.options.aspectRatio;
-        jcropOptions.setSelect = [0, 0, this.$img.width()];
-      }
-      that = this;
-      return this.$img.Jcrop(jcropOptions, function() {
-        return that.jCrop = this;
-      });
+      var _this = this;
+      return setTimeout(function() {
+        var cropOptions, height, width;
+        _this.trigger("destinationUpdate");
+        _this.$container.show();
+        if (_this.crop) {
+          _this.crop.update();
+          return;
+        }
+        cropOptions = {
+          instance: true,
+          handles: true,
+          onSelectChange: _this._onCropChange,
+          parent: _this.$container
+        };
+        width = _this.$img.width();
+        height = Math.round(_this.$img.width() / _this.options.aspectRatio);
+        if (height > _this.$img.height()) {
+          height = _this.$img.height();
+          width = Math.round(height * _this.options.aspectRatio);
+        }
+        if (_this.options.aspectRatio) {
+          $.extend(cropOptions, cropOptions, {
+            aspectRatio: "" + _this.options.aspectRatio + ":1",
+            x1: 0,
+            y1: 0,
+            x2: width,
+            y2: height
+          });
+        }
+        return _this.crop = _this.$img.imgAreaSelect(cropOptions);
+      }, 50);
     };
 
-    Cutter.prototype._onCropChange = function(event) {
+    Cutter.prototype._onCropChange = function(img, event) {
       var $el, coord, height, relativeCoords, width, _ref, _results;
       width = this.$img.width();
       height = this.$img.height();
       relativeCoords = {
-        w: event.w / width,
-        h: event.h / height,
-        x: event.x / width,
-        y: event.y / height
+        w: event.width / width,
+        h: event.height / height,
+        x: event.x1 / width,
+        y: event.y1 / height
       };
       _ref = this.options.geometryFields;
       _results = [];
